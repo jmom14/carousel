@@ -1,24 +1,22 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React, {useEffect, useState} from 'react';
+import Carousel from './components/Carousel';
+import axios from 'axios';
+import {Photo} from './types';
 
 function App() {
+  const [photos, setPhotos] = useState<Photo[]>([]);
+
+  useEffect(() => {
+    const fetchImages = async () => {
+      const { data } = await axios.get('https://608b28b3737e470017b74834.mockapi.io/api/photos');
+      setPhotos(data);
+    };
+    fetchImages();
+  }, []);
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div>
+      <Carousel data={photos} />
     </div>
   );
 }
